@@ -70,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_message'])) {
     <div class="container">
         <div class="header">
             <h1>Обратная связь</h1>
-            <div class="subtitle">Лабораторная работа №8</div>
         </div>
         
         <div class="content">

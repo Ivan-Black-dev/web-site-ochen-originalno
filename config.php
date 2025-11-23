@@ -4,7 +4,7 @@ session_start();
 // Конфигурация базы данных
 $host = 'localhost';
 $dbname = 'feedback_system';
-$username = 'imko_user';      // Имя пользователя которое создали
+$username = 'feedback_user';      // Имя пользователя которое создали
 $password = 'password123'; // Пароль который установили
 
 try {
