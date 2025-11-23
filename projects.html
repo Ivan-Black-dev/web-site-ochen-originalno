@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Проекты - ИМ-КО</title>
+    <style>
+        /* ===== БАЗОВЫЕ СТИЛИ ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ===== ШАПКА ===== */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #3498db;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .btn-login {
+            background-color: transparent;
+            color: #3498db;
+            border: 1px solid #3498db;
+        }
+
+        .btn-register {
+            background-color: #3498db;
+            color: white;
+            border: 1px solid #3498db;
+        }
+
+        .btn-login:hover {
+            background-color: #f0f8ff;
+        }
+
+        .btn-register:hover {
+            background-color: #2980b9;
+        }
+
+        /* ===== УНИВЕРСАЛЬНЫЕ СТИЛИ ДЛЯ H2 ===== */
+        section h2 {
+            font-size: 36px;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            padding-bottom: 15px;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+
+        section h2:hover::after {
+            width: 120px;
+        }
+
+        /* ===== СТИЛИ ДЛЯ СТРАНИЦЫ ПРОЕКТОВ ===== */
+        .projects-page {
+            padding: 80px 0;
+            background-color: #fff;
+        }
+
+        .projects-category {
+            margin-bottom: 80px;
+        }
+
+        .category-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .category-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .category-title {
+            font-size: 32px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .category-description {
+            font-size: 18px;
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ===== ИНТЕРАКТИВНЫЕ КАРТОЧКИ ПРОЕКТОВ ===== */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            height: 320px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+
+        .project-card-inner {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.7s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            padding: 40px;
+        }
+
+        .project-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            z-index: 2;
+            flex-direction: column;
+        }
+
+        .project-back {
+            background: #f8f9fa;
+            color: #2c3e50;
+            transform: translateY(100%);
+            z-index: 1;
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .project-card:hover .project-front {
+            transform: translateY(-100%);
+        }
+
+        .project-card:hover .project-back {
+            transform: translateY(0);
+        }
+
+        .project-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .project-card:hover .project-icon {
+            transform: translateY(-50px) scale(0.8);
+            opacity: 0;
+        }
+
+        .project-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .project-card:hover .project-name {
+            transform: translateY(-40px);
+            opacity: 0;
+        }
+
+        .project-category {
+            font-size: 14px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .project-card:hover .project-category {
+            transform: translateY(-30px);
+            opacity: 0;
+        }
+
+        .project-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+
+        .project-description {
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #5a6c7d;
+            max-height: 120px;
+            overflow: hidden;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tech-tag {
+            background: #e9ecef;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .project-link {
+            padding: 8px 16px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .project-link:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .project-link.secondary {
+            background: transparent;
+            color: #3498db;
+            border: 1px solid #3498db;
+        }
+
+        .project-link.secondary:hover {
+            background: #f8f9fa;
+        }
+
+        /* Цветовые схемы для разных категорий */
+        .project-card.it .project-front {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .project-card.music .project-front {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .project-card.business .project-front {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        /* ===== ПОДВАЛ ===== */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 40px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .contacts {
+            display: flex;
+            gap: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .contact-item a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-item a:hover {
+            color: #3498db;
+        }
+
+        /* ===== АДАПТИВНОСТЬ ===== */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                gap: 15px;
+            }
+            
+            .projects-page {
+                padding: 60px 0;
+            }
+            
+            section h2 {
+                font-size: 28px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .project-card {
+                height: 300px;
+            }
+            
+            .project-card-inner {
+                padding: 30px;
+            }
+            
+            .category-title {
+                font-size: 28px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .projects-page {
+                padding: 40px 0;
+            }
+            
+            section h2 {
+                font-size: 24px;
+            }
+            
+            .project-card {
+                height: 280px;
+            }
+            
+            .project-card-inner {
+                padding: 20px;
+            }
+            
+            .project-name {
+                font-size: 20px;
+            }
+            
+            .project-title {
+                font-size: 18px;
+            }
+            
+            .category-title {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Шапка с навигацией -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">ИМ-КО.РФ</div>
+                <nav>
+                    <ul>
+                        <li><a href="/">Главная</a></li>
+                        <li><a href="/about.html">О нас</a></li>
+                        <li><a href="/projects.html">Разработки</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="#" class="btn btn-register">Обратная связь</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Страница проектов -->
+    <section class="projects-page">
+        <div class="container">
+            <h2>Наши проекты</h2>
+            
+            <!-- IT-разработка -->
+            <div class="projects-category">
+                <div class="category-header">
+                    <div class="category-icon">💻</div>
+                    <h3 class="category-title">IT-разработка</h3>
+                    <p class="category-description">Инновационные решения в области веб-разработки, мобильных приложений и игр</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <div class="project-card it">
+                        <div class="project-card-inner project-front">
+                            <div class="project-icon">🎮</div>
+                            <div class="project-name">OP Game</div>
+                            <div class="project-category">Игра</div>
+                        </div>
+                        <div class="project-card-inner project-back">
+                            <div>
+                                <div class="project-title">Optical Physical Game</div>
+                                <p class="project-description">Это официально зарегистрированное ПО (№ 2025662381), созданное совместно с университетскими доцентами. Интерактивный симулятор, который превращает сложные темы оптической физики для первокурсников в наглядную и увлекательную игру</p>
+                                <div class="project-links">
+                                    <a href="https://github.com/Ivan-Black-dev/opticalPhysicGame/releases/tag/v1.0.0" class="project-link">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card it">
+                        <div class="project-card-inner project-front">
+                            <div class="project-icon">📺</div>
+                            <div class="project-name">OP Game 2.0</div>
+                            <div class="project-category">Игра</div>
+                        </div>
+                        <div class="project-card-inner project-back">
+                            <div>
+                                <div class="project-title">Optical Physical Game 2.0</div>
+                                <p class="project-description">Серьезное обновление официально зарегистрированного ПО (№ 2025662381). С полностью переработанной графикой, улучшенными алгоритмами и новой системой искусственной генерации заданий. Теперь изучение оптики для студентов-первокурсников стало еще нагляднее, стабильнее и эффективнее</p>
+                                <div class="project-links">
+                                    <a href="https://github.com/Ivan-Black-dev/opticalPhysicGame" class="project-link secondary">GitHub</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card it">
+                        <div class="project-card-inner project-front">
+                            <div class="project-icon">📱</div>
+                            <div class="project-name">ИМ-КО.РФ</div>
+                            <div class="project-category">Сайт</div>
+                        </div>
+                        <div class="project-card-inner project-back">
+                            <div>
+                                <div class="project-title">ИМ-КО.РФ</div>
+                                <p class="project-description">Тот самый, который Вы сейчас читаете. Это наша курсовая работа в университете, которая вышла далеко за ее пределы. Здесь вы можете познакомиться с нами, Мишей и Ваней, и нашими проектами. Этот сайт — наша общая визитная карточка, платформа для развития и стартовая точка для больших целей</p>
+                                <div class="project-links">
+                                    <a href="/" class="project-link">Ссылка</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Музыка -->
+            <div class="projects-category">
+                <div class="category-header">
+                    <div class="category-icon">🎵</div>
+                    <h3 class="category-title">Музыка</h3>
+                    <p class="category-description">Саундтреки для игр, фильмов и медиапроектов</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <div class="project-card music">
+                        <div class="project-card-inner project-front">
+                            <div class="project-icon">🎼</div>
+                            <div class="project-name">Vespera</div>
+                            <div class="project-category">Группа</div>
+                        </div>
+                        <div class="project-card-inner project-back">
+                            <div>
+                                <div class="project-title">Vespera</div>
+                                <p class="project-description">Мы — голос университетских коридоров, вырвавшийся на сцену. Ваня с его гитарой, что дышит космическими просторами Pink Floyd, и Миша, выбивающий на барабанах яростный ритм «Короля и Шута». Наша музыка — это энергия, рожденная на стыке двух миров: бесконечного космоса и зарядного панк-рока. За нами стоит полноценный коллектив из пяти человек — обо всех остальных участниках вы узнаете, когда мы выйдем на главную сцену «Олимпийского»</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card music">
+                        <div class="project-card-inner project-front">
+                            <div class="project-icon">🎧</div>
+                            <div class="project-name">Дебютный альбом</div>
+                            <div class="project-category">Альбом</div>
+                        </div>
+                        <div class="project-card-inner project-back">
+                            <div>
+                                <div class="project-title">Дебютный альбом</div>
+                                <p class="project-description">Это не просто проект. Это наша квинтэссенция. Тот самый случай, когда музыка перестаёт быть хобби и становится высказыванием. В этом альбоме — всё, что мы есть: энергия университетских репетиций, столкновение наших музыкальных вселенных и желание оставить след не только на сцене, но и в памяти тех, кто услышит</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Бизнес -->
+            <div class="projects-category">
+                <div class="category-header">
+                    <div class="category-icon">💼</div>
+                    <h3 class="category-title">Бизнес-проекты</h3>
+                    <p class="category-description">Бизнес-решения и предпринимательские инициативы</p>
+                </div>
+                
+                <div class="projects-grid">
+                    <div class="project-card business">
+                        <div class="project-card-inner project-front">
+                            <div class="project-icon">📊</div>
+                            <div class="project-name">Бонусная система для московского бар-караоке</div>
+                            <div class="project-category">Система</div>
+                        </div>
+                        <div class="project-card-inner project-back">
+                            <div>
+                                <div class="project-title">Бонусная система для московского бар-караоке</div>
+                                <p class="project-description">Владельцы заведения хотели повысить лояльность гостей и упростить работу персонала. Мы создали автоматизированную систему с мобильным приложением для гостей и удобной панелью управления для администрации. Это помогло увеличить число постоянных посетителей и сократить рутинные операции по учёту бонусов</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card business">
+                        <div class="project-card-inner project-front">
+                            <div class="project-icon">🌐</div>
+                            <div class="project-name">MonteCo</div>
+                            <div class="project-category">Сайт</div>
+                        </div>
+                        <div class="project-card-inner project-back">
+                            <div>
+                                <div class="project-title">MonteCo — сайт застройщика </div>
+                                <p class="project-description">Компании требовалось современное онлайн-представительство для выхода на международный рынок. Мы разработали многоязычный сайт с интерактивной презентацией объектов и системой онлайн-записи. Это позволило привлечь больше зарубежных клиентов и упростить процесс взаимодействия с ними</p>
+                                <div class="project-links">
+                                    <a href="https://monte-co.com/" class="project-link">Ссылка</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подвал -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">ИМ-КО.РФ</div>
+                <div class="contacts">
+                    <div class="contact-item">
+                        <span>Email:</span>
+                        <a href="ichernyy05@yandex.ru">Иван: ichernyy05@yandex.ru</a></br>
+                        <span>|</span>
+                        <a href="s.mihail.co@mail.ru">Миша: s.mihail.co@mail.ru</a>
+                    </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
